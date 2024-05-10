@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "984910640088",
+    "firebase_url": "https://productsws-f1161-default-rtdb.firebaseio.com",
+    "project_id": "productsws-f1161",
+    "storage_bucket": "productsws-f1161.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984910640088:android:17bc38ba9df450964d38ad",
+        "android_client_info": {
+          "package_name": "com.example.postman"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm5JfscS7hkcwCBJgfC4nqRV98Z1fRGwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

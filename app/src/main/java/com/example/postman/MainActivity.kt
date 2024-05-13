@@ -12,10 +12,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.postman.components.BottomNavigation
+import com.example.postman.screens.components.BottomNavigation
 import com.example.postman.navigation.PostmanNavigation
-import com.example.postman.screens.LoginView
+import com.example.postman.screens.DeleteRegistersScreen
 import com.example.postman.screens.SignUpView
+import com.example.postman.screens.WelcomeView
 import com.example.postman.ui.theme.PostmanTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginView()
+                    MainScreen()
                 }
             }
         }

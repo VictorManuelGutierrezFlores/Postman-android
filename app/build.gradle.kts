@@ -72,6 +72,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation:1.2.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.firestore.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -84,6 +85,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     //// FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth:23.0.0")
 }

@@ -25,12 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.postman.components.datePicker
+import androidx.navigation.NavHostController
+import com.example.postman.navigation.NavScreen
+import com.example.postman.screens.components.datePicker
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun UpdateRegisters(){
+fun UpdateRegisters(navController: NavHostController) {
     // INIT VARIABLES
     var isbn by remember { mutableStateOf("") }
     var author by remember { mutableStateOf("") }
@@ -100,7 +104,7 @@ fun UpdateRegisters(){
         Spacer(modifier = Modifier.height(8.dp))
         /// OPERATIONS BUTTONS
         Row {
-            ElevatedButton(onClick = { /*TODO*/ }) {
+            ElevatedButton(onClick = { navController.navigate(NavScreen.Dashboard.name) }) {
                 Text(text = "Cancelar")
             }
             Button(onClick = { showAlert = true }) {
@@ -118,7 +122,7 @@ fun UpdateRegisters(){
                     TextButton(
                         onClick = {
                             showAlert = false
-                            // Submit the form data
+                            addOnServer(isbn,author,title,publisher,selectedDate,price,discountValue)
                         }
                     ) {
                         Text("Sí")
@@ -135,4 +139,16 @@ fun UpdateRegisters(){
         }
 
     }
+}
+private fun addOnServer(isbn:String, autor:String,titulo:String,editorial:String, fecha:String,precio:String,descuento:String){
+    val db = Firebase.firestore
+    db.collection("detalles")
+        .document(isbn).set(
+            hashMapOf("autor" to autor,
+                "titulo" to titulo,
+                "editorial" to editorial,
+                "fecha" to fecha,
+                "precio" to precio,
+                "descuenot" to descuento)
+        )
 }

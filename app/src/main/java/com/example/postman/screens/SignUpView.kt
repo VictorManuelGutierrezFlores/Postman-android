@@ -30,14 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.postman.navigation.NavScreen
 import com.google.firebase.auth.FirebaseAuth
 
-@Preview
+
 @Composable
-fun SignUpView() {
+fun SignUpView(navController: NavController) {
     // INITIALIZE VARIABLES
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -50,7 +51,7 @@ fun SignUpView() {
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start
     ) {
-        TextButton(onClick = { /*TODO*/  }) {
+        TextButton(onClick = { navController.navigate(NavScreen.WelcomeView.name)  }) {
             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar",
                 modifier = Modifier.width(30.dp),)
             Text(text = "Regresar")

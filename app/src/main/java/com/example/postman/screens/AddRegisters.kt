@@ -2,29 +2,22 @@
 
 package com.example.postman.screens
 
-import android.os.Build
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,22 +31,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.postman.components.datePicker
-import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import androidx.navigation.NavController
+import com.example.postman.models.Books
+import com.example.postman.models.User
+import com.example.postman.navigation.NavScreen
+import com.example.postman.screens.components.datePicker
+import com.google.firebase.firestore.firestore
+import com.google.firebase.Firebase
 
 @ExperimentalMaterial3Api
-@Preview
 @Composable
-fun AddRegisters(){
+fun AddRegisters(navController: NavController){
     // INIT VARIABLES
-    var category by remember { mutableStateOf("") }
     var isbn by remember { mutableStateOf("") }
     var author by remember { mutableStateOf("") }
     var title by remember { mutableStateOf("") }
@@ -65,16 +54,13 @@ fun AddRegisters(){
     var state by remember { mutableStateOf(false) }
     var showAlert by remember { mutableStateOf(false) }
 
-
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         /// TITLE
         Text(text = "Añadir producto", style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold)
-        //// CATEGORY FIELD
-        category = Categoria()
 
         /// ISBN FIELD
         OutlinedTextField(
@@ -138,15 +124,15 @@ fun AddRegisters(){
             }
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
         Row {
-            ElevatedButton(onClick = { /*TODO*/ }) {
+            ElevatedButton(onClick = { navController.navigate(NavScreen.Dashboard.name) }) {
                 Text(text = "Cancelar")
             }
             Button(onClick = { showAlert = true }) {
                 Text(text = "Agregar")
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         //ALERT
@@ -159,7 +145,7 @@ fun AddRegisters(){
                     TextButton(
                         onClick = {
                             showAlert = false
-                            // Submit the form data
+                            addOnServer(isbn,author,title,publisher,selectedDate,price,discountValue)
                         }
                     ) {
                         Text("Sí")
@@ -200,47 +186,15 @@ fun Descuento(
     }
 }
 
-@Composable
-fun Categoria(): String {
-    var selectedCategory by remember { mutableStateOf("") } // State to track selected category
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text("Selecciona una categoría:", style = MaterialTheme.typography.bodyMedium)
-
-        Button(
-            onClick = { selectedCategory = "Manga" },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (selectedCategory == "Manga") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Text("Manga")
-        }
-
-        Button(
-            onClick = { selectedCategory = "Comic" },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (selectedCategory == "Comic") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Text("Comic")
-        }
-
-        Button(
-            onClick = { selectedCategory = "Libro" },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (selectedCategory == "Libro") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Text("Libro")
-        }
-    }
-    return selectedCategory
+private fun addOnServer(isbn:String, autor:String,titulo:String,editorial:String, fecha:String,precio:String,descuento:String){
+    val db = Firebase.firestore
+    db.collection("detalles")
+        .document(isbn).set(
+            hashMapOf("autor" to autor,
+                "titulo" to titulo,
+                "editorial" to editorial,
+                "fecha" to fecha,
+                "precio" to precio,
+                "descuenot" to descuento)
+        )
 }

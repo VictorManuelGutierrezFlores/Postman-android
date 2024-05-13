@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.postman.screens.AddRegisters
 import com.example.postman.screens.Dashboard
-import com.example.postman.screens.DeleteRegisters
+import com.example.postman.screens.DeleteRegistersScreen
 import com.example.postman.screens.GetRegisters
 import com.example.postman.screens.LoginView
 import com.example.postman.screens.SignUpView
@@ -20,33 +20,33 @@ import com.example.postman.screens.WelcomeView
 @Composable
 fun PostmanNavigation( navController: NavHostController ){
     NavHost(navController = navController,
-        startDestination = NavScreen.WelcomeView.name) {
+        startDestination = NavScreen.SplashScreen.name) {
         composable(NavScreen.Dashboard.name){
             Dashboard()
         }
         composable(NavScreen.AddRegisters.name){
-            AddRegisters()
+            AddRegisters(navController)
         }
         composable(NavScreen.UpdateRegisters.name){
-            UpdateRegisters()
+            UpdateRegisters( navController )
         }
         composable(NavScreen.DeleteRegisters.name){
-            DeleteRegisters()
+            DeleteRegistersScreen(navController)
         }
         composable(NavScreen.GetRegisters.name){
             GetRegisters()
         }
         composable(NavScreen.SplashScreen.name){
-            SplashScreen()
+            SplashScreen( navController )
         }
         composable(NavScreen.WelcomeView.name){
-            WelcomeView()
+            WelcomeView( navController )
         }
         composable(NavScreen.LoginScreen.name){
-            LoginView()
+            LoginView(navController )
         }
         composable(NavScreen.SignUpScreen.name){
-            SignUpView()
+            SignUpView( navController )
         }
     }
 }

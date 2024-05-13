@@ -1,4 +1,4 @@
-package com.example.postman.components
+package com.example.postman.screens.components
 
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement

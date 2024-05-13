@@ -33,11 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.postman.R
+import com.example.postman.navigation.NavScreen
 
-@Preview
 @Composable
-fun WelcomeView(){
+fun WelcomeView( navController: NavController ){
     val rainbowColorsBrush = remember {
         Brush.sweepGradient(
             listOf(
@@ -96,7 +97,7 @@ fun WelcomeView(){
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
-                    onClick = {  },
+                    onClick = { navController.navigate(NavScreen.SignUpScreen.name) },
                     Modifier
                         .fillMaxWidth()
                         .height(50.dp)
@@ -107,7 +108,7 @@ fun WelcomeView(){
                 }
 
                 OutlinedButton(
-                    onClick = { },
+                    onClick = { navController.navigate(NavScreen.LoginScreen.name) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)

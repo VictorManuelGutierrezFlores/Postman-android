@@ -1,4 +1,4 @@
-package com.example.postman.components
+package com.example.postman.screens.components
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon

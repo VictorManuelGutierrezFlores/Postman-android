@@ -30,14 +30,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.postman.navigation.NavScreen
 import com.google.firebase.auth.FirebaseAuth
 
-@Preview
 @Composable
-fun LoginView() {
+fun LoginView(navController: NavHostController) {
     // INITIALIZE VARIABLES
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -50,76 +50,77 @@ fun LoginView() {
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start
     ) {
-        /// RETURN ICON
-        TextButton(onClick = { /*TODO*/  }) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar",
-                modifier = Modifier.width(30.dp))
-            Text(text = "Regresar")
-        }
-        /// TITLE
-        Text(text = "¡Bienvenido de vuelta\uD83C\uDF86!", fontWeight = FontWeight.Bold, fontSize = 45.sp)
+            /// RETURN ICON
+            TextButton(onClick = { navController.navigate(NavScreen.WelcomeView.name)  }) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar",
+                    modifier = Modifier.width(30.dp))
+                Text(text = "Regresar")
+            }
+            /// TITLE
+            Text(text = "¡Bienvenido de vuelta \uD83C\uDF86!", fontWeight = FontWeight.Bold, fontSize = 45.sp)
 
-        /// EMAIL FIELD
-        TextField(value = email,
-            onValueChange = {newValue->
-                email = newValue
-            },
-            label = { Text(text = "Email") },
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.fillMaxWidth()
-        )
-        /// PASSWORD FIELD
-        var passwordVisible by remember { mutableStateOf(false) }
-
-        TextField(value = password,
-            onValueChange = {newValue ->
-                password = newValue },
-            label = { Text(text = "Contraseña") },
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, contentDescription = null )
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Button(onClick = {
-                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password).
-                                 addOnCompleteListener{
-                                     if(it.isSuccessful){
-                                         showAlert = true
-                                     }else{
-                                         println(it.exception)
-                                     }
-                                 }
-        },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)) {
-            Text(text = "Iniciar sesión")
-        }
-
-        if (showAlert){
-            AlertDialog(
-                onDismissRequest = { showAlert = false },
-                title = { Text("Alerta") },
-                text = { Text("Inicio de sesion exitoso") },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            showAlert = false
-                        }
-                    ) { Text("Ok") }
-                }
+            /// EMAIL FIELD
+            TextField(value = email,
+                onValueChange = {newValue->
+                    email = newValue
+                },
+                label = { Text(text = "Email") },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
             )
+            /// PASSWORD FIELD
+            var passwordVisible by remember { mutableStateOf(false) }
+
+            TextField(value = password,
+                onValueChange = {newValue ->
+                    password = newValue },
+                label = { Text(text = "Contraseña") },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, contentDescription = null )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Button(onClick = {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password).
+                addOnCompleteListener{
+                    if(it.isSuccessful){
+                        showAlert = true
+                        navController.navigate(NavScreen.Dashboard.name)
+                    }else{
+                        println(it.exception)
+                    }
+                }
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)) {
+                Text(text = "Iniciar sesión")
+            }
+
+            if (showAlert){
+                AlertDialog(
+                    onDismissRequest = { showAlert = false },
+                    title = { Text("Alerta") },
+                    text = { Text("Inicio de sesion exitoso") },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                showAlert = false
+                            }
+                        ) { Text("Ok") }
+                    }
+                )
+            }
         }
-    }
 }
 
